@@ -1473,6 +1473,8 @@ GameObject:
   - component: {fileID: 9571598}
   - component: {fileID: 7816707142992709537}
   - component: {fileID: -5600406686956625763}
+  - component: {fileID: 3111655486348248784}
+  - component: {fileID: -8157800512483909851}
   m_Layer: 0
   m_Name: HoodieMale
   m_TagString: Untagged
@@ -1562,10 +1564,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d25e63de48c4cd687f61795355f6e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Movement
+  isBeingDragged: 0
+  inProximity: 0
   vertCheckDist: 2
   searchRadius: 100
   currentWaypoint: {fileID: 0}
   reachDistance: 1
+--- !u!114 &3111655486348248784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &-8157800512483909851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89d9dd849098a43838d12abd3fd90f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Draggable3D
+  liftHeight: 1
+  followSpeed: 15
+  momentumDecay: 8
+  dropSpeed: 8
 --- !u!1 &154910
 GameObject:
   m_ObjectHideFlags: 0
@@ -3059,6 +3097,7 @@ MonoBehaviour:
   textMesh: {fileID: 302193051898126438}
   bubbleVisuals: {fileID: 8500847568638878344}
   typeSpeed: 0.03
+  timeVisible: 4
 --- !u!1 &506306857694933247
 GameObject:
   m_ObjectHideFlags: 0
@@ -3253,6 +3292,7 @@ MonoBehaviour:
   textMesh: {fileID: 5200103294320739211}
   bubbleVisuals: {fileID: 506306857694933247}
   typeSpeed: 0.03
+  timeVisible: 4
 --- !u!1 &4302139738598775873
 GameObject:
   m_ObjectHideFlags: 0

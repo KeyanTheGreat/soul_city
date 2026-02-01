@@ -62,7 +62,7 @@ Material:
     - _QueueOffset: 0
     - _Smoothness: 100
     m_Colors:
-    - _DiffuseColor: {r: 0.6037736, g: 0.05980776, b: 0.05980776, a: 1}
+    - _DiffuseColor: {r: 1, g: 1, b: 1, a: 1}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

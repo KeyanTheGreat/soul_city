@@ -10,7 +10,8 @@ public class Draggable3D : MonoBehaviour
     public float momentumDecay = 8f;
     public float dropSpeed = 8f;
 
-    private static Draggable3D active;   // single drag owner
+    private static Draggable3D active;     // currently dragged
+    private static Draggable3D hovered;    // currently hovered
 
     private Camera cam;
     private Plane dragPlane;
@@ -20,9 +21,18 @@ public class Draggable3D : MonoBehaviour
     private Vector3 targetPosition;
     private float initY;
 
+    private Outline outline;
+    private Collider col;
+
     void Awake()
     {
         cam = Camera.main;
+        col = GetComponent<Collider>();
+        outline = GetComponent<Outline>();
+
+        if (outline != null)
+            outline.enabled = false;
+
         initY = transform.position.y;
     }
 
@@ -33,12 +43,15 @@ public class Draggable3D : MonoBehaviour
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Ray ray = cam.ScreenPointToRay(mousePos);
 
+        // ---------------- HOVER ----------------
+        HandleHover(ray);
+
         // ---------------- PICK UP ----------------
         if (Mouse.current.leftButton.wasPressedThisFrame && active == null)
         {
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if (hit.collider == GetComponent<Collider>())
+                if (hit.collider == col)
                 {
                     BeginDrag();
                 }
@@ -94,8 +107,46 @@ public class Draggable3D : MonoBehaviour
         }
     }
 
+    // ---------------- HOVER LOGIC ----------------
+    private void HandleHover(Ray ray)
+    {
+        if (isDragging || active != null)
+        {
+            ClearHover();
+            return;
+        }
+
+        Draggable3D newHover = null;
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            newHover = hit.collider.GetComponent<Draggable3D>();
+        }
+
+        if (hovered != newHover)
+        {
+            ClearHover();
+
+            hovered = newHover;
+
+            if (hovered != null && hovered.outline != null)
+                hovered.outline.enabled = true;
+        }
+    }
+
+    private static void ClearHover()
+    {
+        if (hovered != null && hovered.outline != null)
+            hovered.outline.enabled = false;
+
+        hovered = null;
+    }
+
+    // ---------------- DRAG INIT ----------------
     private void BeginDrag()
     {
+        ClearHover();
+
         active = this;
         isDragging = true;
         velocity = Vector3.zero;
