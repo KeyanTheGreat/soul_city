@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    public Boolean isBeingDragged = false;
-    public Boolean inProximity = false;
+    private Animator animator;
+
+    public bool isBeingDragged = false;
+    public bool inProximity = false;
 
     public HashSet<Waypoint> allWaypoints;
 
@@ -18,11 +20,13 @@ public class Movement : MonoBehaviour
     void Start()
     {
         allWaypoints = new HashSet<Waypoint>(FindObjectsOfType<Waypoint>());
+        animator = GetComponent<Animator>();
         Debug.Log($"All waypoints: {allWaypoints.Count}");
     }
 
     void Update()
     {
+        animator.SetBool("isDragging", isBeingDragged);
         if (currentWaypoint == null || ReachedCurrentWaypoint())
         {
             var wayPoints = FindVisibleWaypoints().ToList();
