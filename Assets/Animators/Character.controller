@@ -38,13 +38,8 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
-<<<<<<< HEAD
-    m_State: {fileID: 6296472706640765976}
-    m_Position: {x: 260, y: 200, z: 0}
-=======
     m_State: {fileID: 7277653772775596267}
     m_Position: {x: 270, y: 300, z: 0}
->>>>>>> 2ba3f18 (new home screen)
   - serializedVersion: 1
     m_State: {fileID: 3690331308316262753}
     m_Position: {x: 550, y: 210, z: 0}
