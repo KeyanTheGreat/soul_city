@@ -17,7 +17,7 @@ public class Movement : MonoBehaviour
     void Start()
     {
         allWaypoints = new HashSet<Waypoint>(FindObjectsOfType<Waypoint>());
-        Debug.Log($"All waypoints: {allWaypoints.Count}");
+        //Debug.Log($"All waypoints: {allWaypoints.Count}");
     }
 
     void Update()
@@ -25,7 +25,7 @@ public class Movement : MonoBehaviour
         if (currentWaypoint == null || ReachedCurrentWaypoint())
         {
             var wayPoints = FindVisibleWaypoints();
-            Debug.Log($"Choosing from {wayPoints.Count} visible waypoints.");
+            //Debug.Log($"Choosing from {wayPoints.Count} visible waypoints.");
             if (wayPoints.Count > 0)
             {
                 int index = UnityEngine.Random.Range(0, wayPoints.Count);
@@ -34,7 +34,7 @@ public class Movement : MonoBehaviour
                     if (index == 0)
                     {
                         currentWaypoint = wp;
-                        Debug.Log($"New waypoint: {currentWaypoint.name}");
+                        //.Log($"New waypoint: {currentWaypoint.name}");
                         break;
                     }
                     index--;
@@ -100,19 +100,19 @@ public class Movement : MonoBehaviour
                 )
                     continue;
                 blocked = true;
-                Debug.Log($"Ray from {name} to {wp.name} blocked by {hit.collider.name}");
-                Debug.DrawLine(origin, hit.point, Color.red, 0.1f);
+                //Debug.Log($"Ray from {name} to {wp.name} blocked by {hit.collider.name}");
+                //Debug.DrawLine(origin, hit.point, Color.red, 0.1f);
                 break;
             }
 
             if (!blocked)
             {
                 visibleWaypoints.Add(wp);
-                Debug.DrawLine(origin, target, Color.green, 0.1f); // visible
+                //Debug.DrawLine(origin, target, Color.green, 0.1f); // visible
             }
         }
 
-        Debug.Log($"Visible waypoints: {visibleWaypoints.Count}");
+       //Debug.Log($"Visible waypoints: {visibleWaypoints.Count}");
         return visibleWaypoints;
     }
 }
