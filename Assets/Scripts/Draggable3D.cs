@@ -1,111 +1,106 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Collider))]
 public class Draggable3D : MonoBehaviour
 {
     [Header("Drag Settings")]
     public float liftHeight = 1f;
-    public float followSpeed = 10f;
-    public float momentumDecay = 10f;
-    public float dropSpeed = 5f;
-    public float dragPlaneOffset = 0f;
+    public float followSpeed = 15f;
+    public float momentumDecay = 8f;
+    public float dropSpeed = 8f;
 
-    [Header("Camera Zoom")]
-    public Transform cameraTransform;
-    public float zoomDistance = 2f;
-    public float zoomSpeed = 5f;
+    private static Draggable3D active;   // single drag owner
 
     private Camera cam;
-
     private Plane dragPlane;
+
+    private bool isDragging;
     private Vector3 velocity;
-    private bool isDragging = false;
     private Vector3 targetPosition;
     private float initY;
 
     void Awake()
     {
         cam = Camera.main;
-        initY = transform.position.y; // stash initial Y position
+        initY = transform.position.y;
     }
 
     void Update()
     {
+        if (cam == null) return;
+
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Ray ray = cam.ScreenPointToRay(mousePos);
 
-        // --- Hover detection + outline ---
-        HandleHover(ray);
-
-        // --- Pick up ---
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        // ---------------- PICK UP ----------------
+        if (Mouse.current.leftButton.wasPressedThisFrame && active == null)
         {
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                Draggable3D newDragged = hit.collider.GetComponent<Draggable3D>();
-                if (newDragged != null && !newDragged.isDragging)
+                if (hit.collider == GetComponent<Collider>())
                 {
-                    newDragged.StartDrag();
+                    BeginDrag();
                 }
             }
         }
 
-        // --- Dragging ---
+        // ---------------- DRAG ----------------
         if (isDragging && Mouse.current.leftButton.isPressed)
         {
             if (dragPlane.Raycast(ray, out float enter))
             {
                 Vector3 hitPoint = ray.GetPoint(enter);
-                targetPosition = new Vector3(hitPoint.x, initY + liftHeight, hitPoint.z);
-                Vector3 newPosition = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * followSpeed);
+                float targetY = initY + liftHeight;
 
-                velocity = new Vector3(
-                    (newPosition.x - transform.position.x) / Time.deltaTime,
-                    0f,
-                    (newPosition.z - transform.position.z) / Time.deltaTime
+                targetPosition = new Vector3(hitPoint.x, targetY, hitPoint.z);
+
+                Vector3 newPos = Vector3.Lerp(
+                    transform.position,
+                    targetPosition,
+                    Time.deltaTime * followSpeed
                 );
 
-                transform.position = newPosition;
+                velocity = (newPos - transform.position) / Time.deltaTime;
+                velocity.y = 0f;
+
+                transform.position = newPos;
             }
         }
 
-        // --- Release ---
+        // ---------------- RELEASE ----------------
         if (isDragging && Mouse.current.leftButton.wasReleasedThisFrame)
         {
             isDragging = false;
+            active = null;
         }
 
-        // --- Momentum + smooth drop ---
-        if (!isDragging && velocity.magnitude > 0f)
+        // ---------------- DROP + MOMENTUM ----------------
+        if (!isDragging && velocity.sqrMagnitude > 0.0001f)
         {
             Vector3 pos = transform.position;
             pos += velocity * Time.deltaTime;
             pos.y = Mathf.Lerp(pos.y, initY, Time.deltaTime * dropSpeed);
+
             transform.position = pos;
 
             velocity = Vector3.Lerp(velocity, Vector3.zero, momentumDecay * Time.deltaTime);
+
+            if (velocity.magnitude < 0.05f && Mathf.Abs(pos.y - initY) < 0.01f)
+            {
+                transform.position = new Vector3(pos.x, initY, pos.z);
+                velocity = Vector3.zero;
+            }
         }
     }
 
-    private void StartDrag()
+    private void BeginDrag()
     {
+        active = this;
         isDragging = true;
-        dragPlane = new Plane(Vector3.up, transform.position + Vector3.up * dragPlaneOffset);
-        targetPosition = transform.position + Vector3.up * liftHeight;
         velocity = Vector3.zero;
-    }
 
-    private void HandleHover(Ray ray)
-    {
-        Draggable3D hovered = null;
-
-        if (!isDragging && Physics.Raycast(ray, out RaycastHit hit))
-        {
-            hovered = hit.collider.GetComponent<Draggable3D>();
-        }
-
-        Outline outline = GetComponent<Outline>();
-        if (outline != null)
-            outline.enabled = (hovered == this);
+        float planeY = initY + liftHeight;
+        dragPlane = new Plane(Vector3.up, new Vector3(0f, planeY, 0f));
     }
 }
