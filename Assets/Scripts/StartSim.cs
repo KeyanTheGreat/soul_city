@@ -5,6 +5,14 @@ using TMPro;
 
 public class StartSim : MonoBehaviour
 {
+    public AudioClip musicClip;
+    public AudioClip clickClip; 
+
+    public float volume = 0.5f;
+
+    private AudioSource clickSource;
+    private AudioSource audioSource;
+
     [Header("Transition Settings")]
     public float transitionTime = 5f;    // camera rotation duration
     public float fadeOutTime = 1f;       // button shrink duration
@@ -31,6 +39,16 @@ public class StartSim : MonoBehaviour
 
         if (flyingText != null)
             textStartPos = flyingText.anchoredPosition;
+
+        clickSource = gameObject.AddComponent<AudioSource>();
+        clickSource.playOnAwake = false;
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.clip = musicClip;
+        audioSource.loop = true;
+        audioSource.volume = volume;
+        audioSource.playOnAwake = true;
+        audioSource.Play();
     }
 
     public void TaskOnClick()
@@ -38,6 +56,7 @@ public class StartSim : MonoBehaviour
         if (isRunning) return;
         isRunning = true;
 
+        clickSource.PlayOneShot(clickClip, volume);
         StartCoroutine(TransitionRoutine());
     }
 
