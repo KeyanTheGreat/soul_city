@@ -1471,6 +1471,8 @@ GameObject:
   m_Component:
   - component: {fileID: 407374}
   - component: {fileID: 9571598}
+  - component: {fileID: 7816707142992709537}
+  - component: {fileID: -5600406686956625763}
   m_Layer: 0
   m_Name: ProtoChar
   m_TagString: Untagged
@@ -1513,7 +1515,7 @@ Animator:
   m_GameObject: {fileID: 153682}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 897b34267f422c1499700402763d096e, type: 3}
-  m_Controller: {fileID: 9100000, guid: 3ed6a4ec809a6ef48b382b3285002327, type: 2}
+  m_Controller: {fileID: 9100000, guid: a310b5519d52b4fe8b2ecf98ea90df9c, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1525,6 +1527,46 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!65 &7816707142992709537
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153682}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.8842206, y: 1.9725971, z: 0.5397583}
+  m_Center: {x: -0.18513775, y: 0.48629856, z: -0.28583896}
+--- !u!114 &-5600406686956625763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d25e63de48c4cd687f61795355f6e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Movement
+  vertCheckDist: 2
+  rayCount: 360
+  viewDistance: 100
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 0
+  currentWaypoint: {fileID: 0}
 --- !u!1 &154910
 GameObject:
   m_ObjectHideFlags: 0
