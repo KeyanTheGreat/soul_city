@@ -23,12 +23,14 @@ public class Draggable3D : MonoBehaviour
 
     private Outline outline;
     private Collider col;
+    private Movement movement;             // <-- added
 
     void Awake()
     {
         cam = Camera.main;
         col = GetComponent<Collider>();
         outline = GetComponent<Outline>();
+        movement = GetComponent<Movement>(); // <-- added
 
         if (outline != null)
             outline.enabled = false;
@@ -84,8 +86,7 @@ public class Draggable3D : MonoBehaviour
         // ---------------- RELEASE ----------------
         if (isDragging && Mouse.current.leftButton.wasReleasedThisFrame)
         {
-            isDragging = false;
-            active = null;
+            EndDrag();
         }
 
         // ---------------- DROP + MOMENTUM ----------------
@@ -151,7 +152,19 @@ public class Draggable3D : MonoBehaviour
         isDragging = true;
         velocity = Vector3.zero;
 
+        if (movement != null)
+            movement.isBeingDragged = true;   // <-- set true
+
         float planeY = initY + liftHeight;
         dragPlane = new Plane(Vector3.up, new Vector3(0f, planeY, 0f));
+    }
+
+    private void EndDrag()
+    {
+        isDragging = false;
+        active = null;
+
+        if (movement != null)
+            movement.isBeingDragged = false;  // <-- set false
     }
 }
