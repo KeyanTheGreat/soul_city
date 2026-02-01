@@ -97,3 +97,4 @@ public class CameraControl : MonoBehaviour
         transform.position = target;
     }
 }
+
