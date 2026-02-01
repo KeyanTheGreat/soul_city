@@ -6,6 +6,8 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     public Boolean isBeingDragged = false;
+    public Boolean inProximity = false;
+
     public HashSet<Waypoint> allWaypoints;
 
     public float vertCheckDist = 0.5f;
